@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#D9EDDF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16241B" media="(prefers-color-scheme: dark)">
+<title>ข้าวปั้น – เรียนรู้และกินดีไปด้วยกัน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --display:'Mitr','Kanit',system-ui,sans-serif;
+  --text:'Sarabun','Noto Sans Thai',system-ui,sans-serif;
+  --bg:#EDF5EE; --bg-top:#D9EDDF; --surface:#FFFFFF; --ink:#16261D; --muted:#566B5D; --line:#D8E7DC; --soft:#EAF4EC;
+  --good:#2B8359; --good-d:#1C5F3F; --on-good:#FFFFFF;
+  --ok:#F4B93E; --ok-d:#C48A14; --on-ok:#3A2A00;
+  --junk:#DE4F2F; --junk-d:#A93418; --on-junk:#FFFFFF;
+  --body:#F3E2B6; --body-hi:#FFF7E0; --body-edge:#DCC285;
+  --stage-a:#D3ECDA; --stage-b:#E8F5EA; --glow:rgba(255,255,255,.9);
+  --shadow:0 10px 24px -16px rgba(28,74,50,.45);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101813; --bg-top:#16241B; --surface:#1A2620; --ink:#E8F1EA; --muted:#9DB0A3; --line:#2A3A30; --soft:#21322A;
+    --good:#4DB380; --good-d:#2E8259; --on-good:#08140D; --ok-d:#B5821A;
+    --junk:#F0714F; --junk-d:#B6472C; --on-junk:#1a0802;
+    --body:#EBD9A8; --body-hi:#FFF3D0; --body-edge:#CDB57A;
+    --stage-a:#1F3A2B; --stage-b:#192A20; --glow:rgba(255,255,255,.1);
+    --shadow:0 10px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101813; --bg-top:#16241B; --surface:#1A2620; --ink:#E8F1EA; --muted:#9DB0A3; --line:#2A3A30; --soft:#21322A;
+  --good:#4DB380; --good-d:#2E8259; --on-good:#08140D; --ok-d:#B5821A;
+  --junk:#F0714F; --junk-d:#B6472C; --on-junk:#1a0802;
+  --body:#EBD9A8; --body-hi:#FFF3D0; --body-edge:#CDB57A;
+  --stage-a:#1F3A2B; --stage-b:#192A20; --glow:rgba(255,255,255,.1);
+  --shadow:0 10px 24px -16px rgba(0,0,0,.7);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;min-height:100%;color:var(--ink);
+  background:linear-gradient(180deg,var(--bg-top) 0,var(--bg) 340px) no-repeat,var(--bg);
+  font-family:var(--text);font-size:17px;line-height:1.6;
+  -webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;
+}
+h1,h2,.k{font-family:var(--display);font-weight:400;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+.app{max-width:480px;margin:0 auto;padding:10px 14px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:6px 4px 14px}
+.logo{font-size:1.4rem;line-height:1.2}
+
+/* ---------- การ์ด ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card p{margin:6px 0}
+.ct{display:flex;align-items:center;gap:10px;font-size:1.1rem;line-height:1.3;margin:0 0 6px}
+.ic{width:34px;height:34px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-size:1.05rem;flex:none}
+.ct .r{margin-left:auto;font-family:var(--text);font-size:.88rem;color:var(--muted);font-weight:500}
+.kn{background:var(--soft);box-shadow:none}
+.kn .ic{background:var(--surface)}
+
+.how ol{list-style:none;counter-reset:s;margin:8px 0 14px;padding:0}
+.how li{counter-increment:s;display:flex;gap:10px;margin:8px 0}
+.how li::before{content:counter(s);flex:none;width:24px;height:24px;margin-top:3px;border-radius:50%;background:var(--good);color:var(--on-good);font:400 .85rem/24px var(--display);text-align:center}
+
+/* ---------- เวที + ตัวละคร ---------- */
+.stage{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--stage-a),var(--stage-b));border:1px solid var(--line);border-radius:32px;padding:18px 14px 20px;text-align:center;margin-bottom:14px}
+.stage::before{content:"";position:absolute;left:50%;top:64px;width:290px;height:290px;margin-left:-145px;border-radius:50%;background:radial-gradient(closest-side,var(--glow),transparent);pointer-events:none}
+.stage>*{position:relative}
+.say{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:7px 16px;margin-bottom:12px;max-width:92%;font-size:1.02rem;box-shadow:0 6px 14px -10px rgba(28,74,50,.4)}
+.say::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;background:var(--surface);border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateX(-50%) rotate(45deg);border-bottom-right-radius:3px}
+.pet-wrap{width:min(54vw,210px);margin:0 auto}
+#pet{width:100%;height:auto;display:block;overflow:visible;transform-origin:50% 92%}
+.meter{height:14px;background:var(--surface);border-radius:99px;overflow:hidden;border:1px solid var(--line);margin:12px auto 0;max-width:300px;padding:2px}
+.meter>i{display:block;height:100%;min-width:8px;border-radius:99px;background:var(--good);transition:width .9s cubic-bezier(.2,.8,.2,1),background-color .4s}
+.meter>i[data-low]{background:var(--ok)}
+.stats{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.chip{display:inline-block;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 13px;font-size:.92rem;font-weight:500;font-variant-numeric:tabular-nums}
+.chip.bump{animation:bump .55s cubic-bezier(.3,.7,.4,1.4)}
+
+/* ---------- ปุ่ม ---------- */
+.btn{display:block;border:0;border-radius:18px;padding:12px 16px;font-family:var(--display);font-weight:400;background:var(--good);color:var(--on-good);min-height:52px;width:100%;font-size:1.05rem;box-shadow:0 4px 0 var(--good-d);transition:transform .12s ease,box-shadow .12s ease,background-color .2s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--good-d)}
+.btn.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.btn.alt:active{box-shadow:0 0 0 var(--line);transform:translateY(3px)}
+.btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:0 4px 0 var(--good-d)}
+.gap{margin-top:12px}
+
+.choice{display:flex;flex-direction:column;gap:12px;margin-top:12px}
+.big{display:flex;align-items:center;gap:14px;border:0;border-radius:20px;padding:12px 16px;text-align:left;min-height:68px;font-family:var(--display);font-weight:400;font-size:1.15rem;line-height:1.3;transition:transform .12s ease,box-shadow .12s ease}
+.big .em{flex:none;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.24);display:grid;place-items:center;font-size:1.4rem}
+.big .tx{display:flex;flex-direction:column}
+.big small{font-family:var(--text);font-size:.92rem;opacity:.95;line-height:1.35}
+.big.g{background:var(--good);color:var(--on-good);box-shadow:0 4px 0 var(--good-d)}
+.big.o{background:var(--ok);color:var(--on-ok);box-shadow:0 4px 0 var(--ok-d)}
+.big.o .em{background:rgba(255,255,255,.45)}
+.big.j{background:var(--junk);color:var(--on-junk);box-shadow:0 4px 0 var(--junk-d)}
+.big:active{transform:translateY(3px)}
+.big.g:active{box-shadow:0 1px 0 var(--good-d)}
+.big.o:active{box-shadow:0 1px 0 var(--ok-d)}
+.big.j:active{box-shadow:0 1px 0 var(--junk-d)}
+
+.food{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin-top:8px;min-height:52px;transition:transform .12s ease,border-color .2s,background-color .2s}
+.food::after{content:"›";flex:none;color:var(--muted);font-size:1.5rem;line-height:1}
+.food:active{transform:scale(.985);border-color:var(--good);background:var(--soft)}
+@media (hover:hover){.food:hover{border-color:var(--good);background:var(--soft)}}
+
+/* ---------- บันทึก / ภาพรวม ---------- */
+.log{padding:9px 0;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:flex-start}
+.log:last-child{border:0}
+.dot{display:inline-block;width:14px;height:14px;border-radius:50%;flex:none;margin-top:7px}
+.note{font-size:.88rem;color:var(--muted)}
+.ans{border-radius:14px;padding:10px 12px;margin-top:8px;background:var(--surface);border:1.5px solid var(--line)}
+.ans.right{border-color:var(--good);background:var(--soft)}
+.tipbox{border-left:4px solid var(--good);background:var(--soft);padding:10px 12px;border-radius:0 14px 14px 0;margin-top:10px}
+.kn .tipbox{background:var(--surface)}
+.row{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:12px}
+.week{display:flex;gap:6px;align-items:stretch;margin:10px 0 8px;min-height:104px}
+.col{flex:1;display:flex;flex-direction:column-reverse;align-items:center;gap:4px;padding:8px 2px;background:var(--soft);border-radius:14px;font-size:.74rem;color:var(--muted)}
+.col .dot{margin:0;width:11px;height:11px}
+.col .mk{font-size:.95rem;line-height:1;color:var(--ink);min-height:1em}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.84rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend .dot{width:10px;height:10px;margin:0}
+
+/* ---------- มินิเกม ---------- */
+.arena{position:relative;height:270px;background:radial-gradient(circle at 50% 50%,var(--surface),var(--soft));border:1px solid var(--line);border-radius:24px;overflow:hidden;touch-action:manipulation;margin-top:12px}
+.orb{position:absolute;width:64px;height:64px;padding:0;border:0;border-radius:50%;background:radial-gradient(circle at 32% 28%,#fff 0 7%,#F7937A 8%,var(--junk) 72%);box-shadow:0 8px 16px -8px rgba(169,52,24,.7);font-size:1.7rem;display:grid;place-items:center}
+.orb.pop{pointer-events:none}
+.guide{position:absolute;left:50%;top:50%;width:112px;height:112px;margin:-56px 0 0 -56px;display:grid;place-items:center;font-size:.9rem;color:var(--muted);pointer-events:none}
+.guide::before{content:"";position:absolute;inset:0;border-radius:50%;background:color-mix(in srgb,var(--good) 22%,transparent);transform:scale(.85)}
+.guide span{position:relative}
+.tbar{height:8px;border-radius:99px;background:var(--soft);border:1px solid var(--line);overflow:hidden;margin-top:12px}
+.tbar>i{display:block;height:100%;width:100%;background:var(--good);border-radius:99px}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:16px;max-width:90vw;z-index:9;opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s cubic-bezier(.2,.8,.2,1);text-align:center;box-shadow:0 12px 28px -12px rgba(0,0,0,.5);view-transition-name:toast}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- ความเคลื่อนไหว ---------- */
+@media (prefers-reduced-motion:no-preference){
+  #pet.hop{animation:hop .6s cubic-bezier(.3,.7,.4,1)}
+  .bob{animation:bob 4.4s ease-in-out infinite}
+  .sh{animation:sh 4.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  .blink{animation:blink 5s infinite;transform-box:fill-box;transform-origin:center}
+  .guide::before{animation:br 8s ease-in-out infinite}
+  .orb{animation:orbin .28s cubic-bezier(.2,.9,.3,1.3),orbout .3s 1.9s forwards}
+  .orb.pop{animation:pop .2s ease-out forwards}
+  .intro>*{animation:rise .55s cubic-bezier(.2,.8,.2,1) both}
+  .intro>*:nth-child(2){animation-delay:.07s}
+  .intro>*:nth-child(3){animation-delay:.14s}
+  .intro>*:nth-child(4){animation-delay:.21s}
+  .intro>*:nth-child(5){animation-delay:.28s}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:.2s}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important}
+}
+@keyframes hop{30%{transform:translateY(-24px) scale(.97,1.05)}60%{transform:translateY(0) scale(1.06,.93)}100%{transform:none}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes sh{0%,100%{transform:scale(1);opacity:.14}50%{transform:scale(.9);opacity:.09}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes br{0%,100%{transform:scale(.7)}50%{transform:scale(1.15)}}
+@keyframes bump{40%{transform:scale(1.2)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes orbin{from{transform:scale(.4);opacity:0}}
+@keyframes orbout{to{opacity:0;transform:scale(.7)}}
+@keyframes pop{to{transform:scale(1.7);opacity:0}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- เนื้อหา ---------- */
+var FOODS={
+ good:[
+  {n:"ข้าว + ปลาย่าง + ผัก"},{n:"ต้มจืดเต้าหู้ผักรวม"},{n:"ส้มตำ + ไก่ย่าง"},
+  {n:"ยำวุ้นเส้น / สลัดผัก"},{n:"ไข่ต้ม + ข้าวกล้อง"},{n:"ผลไม้สด"}
+ ],
+ ok:[
+  {n:"ข้าวมันไก่",tip:"เพิ่มแตงกวาหรือซุปผักด้วยก็ดี"},
+  {n:"ก๋วยเตี๋ยวน้ำใส",tip:"ขอผักเพิ่มได้"},
+  {n:"กะเพราไข่ดาว",tip:"ขอผักเพิ่ม อิ่มนานขึ้น"},
+  {n:"แซนด์วิช",tip:"เพิ่มผักสลัดอีกชั้น"}
+ ],
+ junk:[
+  {n:"ไก่ทอด / เฟรนช์ฟรายส์",tip:"ครั้งหน้าลอง ไก่ย่าง หรือมันต้ม"},
+  {n:"มาม่า",tip:"ครั้งหน้าลอง ก๋วยเตี๋ยวน้ำใสใส่ผักเยอะๆ"},
+  {n:"ชานมไข่มุก",tip:"ครั้งหน้าลอง ชาไม่หวาน หรือหวานน้อยลง"},
+  {n:"น้ำอัดลม",tip:"ครั้งหน้าลอง โซดามะนาว หรือน้ำเปล่า"},
+  {n:"ขนมถุง",tip:"ครั้งหน้าลอง ถั่วอบ ข้าวโพดต้ม หรือผลไม้"},
+  {n:"หมูกระทะจัดหนัก",tip:"ครั้งหน้ากินผักกับซุปก่อน แล้วค่อยเนื้อ"},
+  {n:"ขนมหวาน / เค้ก",tip:"ครั้งหน้าลอง แบ่งกับเพื่อน หรือผลไม้ราดโยเกิร์ต"}
+ ]
+};
+var COLOR={good:"var(--good)",ok:"var(--ok)",junk:"var(--junk)"};
+var KIND_EM={good:"🥗",ok:"🍜",junk:"🍟"};
+
+/* คำมั่น เรียงจากง่ายไปยาก */
+var PRESETS=[
+ "ดื่มน้ำเปล่า 1 แก้วก่อนกินขนมหรือของหวาน",
+ "ใส่ผักในมื้อใดมื้อหนึ่งอย่างน้อย 1 อย่าง",
+ "สั่งเครื่องดื่มหวานน้อยลง 1 ระดับ",
+ "เปลี่ยนเครื่องดื่มหวาน 1 แก้ว เป็นน้ำเปล่า ชาไม่หวาน หรือโซดามะนาว",
+ "ตอนอยากกินของทอดหรือขนม รอ 15 นาทีก่อนตัดสินใจ",
+ "ไม่กินขนมถุงจากถุง แบ่งใส่ถ้วยเล็กๆ ก่อน"
+];
+/* อุปสรรค + วิธีปรับ */
+var BARRIERS=[
+ {id:"forget",l:"ลืม",tip:"ผูกคำมั่นกับสิ่งที่ทำทุกวันอยู่แล้ว เช่น “หลังแปรงฟัน” หรือ “ก่อนนั่งโต๊ะกินข้าว” แล้วตั้งเตือนในมือถือหรือแปะโน้ตไว้ที่ตู้เย็น"},
+ {id:"social",l:"อยู่กับเพื่อนหรือครอบครัว",tip:"เลือกเมนูในใจก่อนไปถึงร้าน และบอกคนใกล้ตัวว่ากำลังลองอยู่ หลายคนยินดีช่วยหรืออยากลองด้วย"},
+ {id:"stress",l:"เครียดหรือเบื่อ",tip:"ความเครียดทำให้อยากของหวานและของมันมากขึ้นได้ ลองเดิน 5 นาทีหรือเล่นเกมสู้ความอยากก่อน แล้วค่อยตัดสินใจ"},
+ {id:"hungry",l:"หิวมากเกินไป",tip:"หิวจัดทำให้คุมตัวเองยาก ลองมีของว่างดีๆ ติดตัว เช่น ผลไม้ ถั่ว ไข่ต้ม แล้วอย่าปล่อยให้ข้ามมื้อ"},
+ {id:"find",l:"หาของดีไม่ได้",tip:"ลองเริ่มจากเปลี่ยนแค่เครื่องดื่ม หรือเปิดดูเมนูร้านล่วงหน้า ของดีใกล้ตัวมักเป็นผลไม้ ไข่ต้ม หรือก๋วยเตี๋ยวน้ำใส"},
+ {id:"hard",l:"เป้ายากเกินไป",tip:"ไม่ใช่ความผิดของคุณ เป้าใหญ่เกินก็แค่ย่อให้เล็กลง พรุ่งนี้เกมจะเสนอเป้าที่เบาที่สุดให้ก่อน"}
+];
+/* ความรู้รายวัน: o = ตัวเลือก, a = ข้อที่ถูก (0/1) */
+var FACTS=[
+ {q:"น้ำอัดลม 1 กระป๋อง (ราว 325 มล.) มีน้ำตาลประมาณเท่าไหร่?",o:["2–3 ช้อนชา","8–10 ช้อนชา"],a:1,e:"ราว 8–10 ช้อนชา ขณะที่คำแนะนำทั่วไปคือกินน้ำตาลเติมแต่งไม่เกินราว 6 ช้อนชาต่อวัน กระป๋องเดียวก็เกินแล้ว"},
+ {q:"ความอยากกินของไม่ดีมักเป็นอย่างไร?",o:["ผ่านไปเอง ภายในราว 10–20 นาที","ยิ่งรอยิ่งแรงขึ้นจนต้องกิน"],a:0,e:"ความอยากมาเป็นคลื่น ขึ้นสูงแล้วลดลงเอง การรอและหันไปทำอย่างอื่นสักพักช่วยได้จริง"},
+ {q:"ทำไมน้ำหวานถึงทำให้เพิ่มน้ำหนักง่ายกว่าอาหารที่มีพลังงานเท่ากัน?",o:["ดื่มแล้วไม่ค่อยรู้สึกอิ่ม จึงยังกินมื้อต่อไปเท่าเดิม","เพราะร่างกายดูดซึมน้ำหวานไม่ได้"],a:0,e:"พลังงานจากของเหลวทำให้อิ่มน้อยกว่าอาหารเคี้ยว เราจึงมักไม่กินน้อยลงชดเชย"},
+ {q:"นอนน้อยเกี่ยวกับการอยากของหวานไหม?",o:["ไม่เกี่ยวกันเลย","นอนน้อยมักทำให้อยากของหวานและของมันมากขึ้น"],a:1,e:"งานวิจัยพบว่านอนไม่พอเพิ่มความอยากอาหารและความอยากของหวาน ผู้ใหญ่ส่วนใหญ่ควรนอนราว 7–9 ชั่วโมง"},
+ {q:"มาม่า 1 ซอง (รวมเครื่องปรุงทั้งหมด) โซดียมสูงแค่ไหน?",o:["น้อย ไม่ต้องกังวล","มักถึงครึ่งหนึ่งหรือมากกว่าของที่ควรได้ทั้งวัน"],a:1,e:"ลองใช้เครื่องปรุงครึ่งซอง และเติมผักกับไข่ จะได้อิ่มและอร่อยโดยเค็มน้อยลง"},
+ {q:"ข้อไหนช่วยให้กินขนมน้อยลงได้มากกว่า?",o:["ซื้อไว้แล้วฝึกใจแข็ง","ไม่ซื้อติดบ้าน หรือเก็บในที่หยิบยาก"],a:1,e:"สภาพแวดล้อมมีพลังมากกว่าแรงใจ เมื่อของอยู่ไกลตา ความอยากเกิดน้อยลงและกินน้อยลง"},
+ {q:"พลาดกินของไม่ดีไป 1 มื้อ ควรทำอย่างไร?",o:["ปล่อยเลยทั้งวัน เพราะพังแล้ว","กลับมาเลือกดีในมื้อถัดไป ไม่ต้องอดชดเชย"],a:1,e:"ความคิดว่า “พังแล้ว” คือกับดัก การอดชดเชยมักทำให้หิวจัดแล้วกินเกิน กลับมาที่มื้อถัดไปคือวิธีที่ดีที่สุด"},
+ {q:"ถ้าแบ่งจานเป็นสี่ส่วน ผักควรได้กี่ส่วน?",o:["1 ส่วน","ราวครึ่งจาน"],a:1,e:"แนวทางจานสุขภาพคือผักราวครึ่งจาน ข้าวหรือแป้งกับโปรตีนอย่างละราวหนึ่งในสี่"},
+ {q:"“หวานน้อย 25%” แปลว่าอะไร?",o:["ยังมีน้ำตาลอยู่ แต่น้อยลงกว่าปกติ","ไม่มีน้ำตาลเลย"],a:0,e:"ยังมีน้ำตาล แค่น้อยลง ถือว่าเป็นก้าวที่ดี และลดทีละระดับได้เรื่อยๆ จนลิ้นคุ้นเคย"},
+ {q:"คำมั่นแบบไหนทำตามได้จริงมากกว่า?",o:["“ฉันจะกินดีขึ้น”","“หลังเลิกงาน ฉันจะดื่มน้ำก่อนหยิบขนม”"],a:1,e:"คำมั่นที่บอกชัดว่า เมื่อไหร่ และทำอะไร ทำตามได้จริงมากกว่าเป้าหมายกว้างๆ นี่คือเหตุผลที่เกมให้ตั้งคำมั่นทุกวัน"}
+];
+
+/* ---------- สถานะ ---------- */
+var KEY="khaopan_learn_v1";
+var S={day:1,energy:50,coins:0,streak:0,log:[],hideHow:false,pick:"",crave:false,
+       promise:"",easy:false,quizDay:0,quizPick:-1,hist:[]};
+try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);for(var k in o)S[k]=o[k];}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function cnt(kind){return S.log.filter(function(x){return x.k===kind;}).length;}
+function mood(){return S.energy>=70?"happy":S.energy>=40?"ok":"tired";}
+var R=null;      /* สถานะหน้าทบทวนก่อนจบวัน */
+var G=null;      /* สถานะมินิเกม */
+var reduceMo=window.matchMedia("(prefers-reduced-motion:reduce)");
+var booted=false,lastView="",lastEnergy=0,lastCoins=S.coins;
+
+/* ---------- ตัวละคร ---------- */
+function petSvg(m){
+  var eyes,mouth;
+  if(m==="happy"){
+    eyes='<path d="M70 98 Q78 88 86 98" stroke="#1E2B22" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M114 98 Q122 88 130 98" stroke="#1E2B22" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    mouth='<path d="M84 120 Q100 138 116 120 Q100 126 84 120Z" fill="#B8402B" stroke="#1E2B22" stroke-width="3" stroke-linejoin="round"/>';
+  }else if(m==="ok"){
+    eyes='<g class="blink"><circle cx="78" cy="96" r="6" fill="#1E2B22"/><circle cx="122" cy="96" r="6" fill="#1E2B22"/></g>';
+    mouth='<path d="M88 122 Q100 128 112 122" stroke="#1E2B22" stroke-width="4" fill="none" stroke-linecap="round"/>';
+  }else{
+    eyes='<path d="M70 98 L86 98" stroke="#1E2B22" stroke-width="5" stroke-linecap="round"/><path d="M114 98 L130 98" stroke="#1E2B22" stroke-width="5" stroke-linecap="round"/>';
+    mouth='<ellipse cx="100" cy="124" rx="7" ry="5" fill="#1E2B22"/>';
+  }
+  var label=m==="happy"?"ข้าวปั้นกำลังมีความสุข":m==="ok"?"ข้าวปั้นรู้สึกเฉยๆ":"ข้าวปั้นเพลีย";
+  return '<svg id="pet" viewBox="0 0 200 200" role="img" aria-label="'+label+'">'
+   +'<defs><radialGradient id="pg" cx="38%" cy="30%" r="80%"><stop offset="0" style="stop-color:var(--body-hi)"/><stop offset="1" style="stop-color:var(--body)"/></radialGradient></defs>'
+   +'<ellipse class="sh" cx="100" cy="190" rx="58" ry="8" fill="#000" opacity=".14"/>'
+   +'<g class="bob">'
+   +'<path d="M100 28 C150 28 172 80 172 124 C172 166 142 184 100 184 C58 184 28 166 28 124 C28 80 50 28 100 28Z" fill="url(#pg)" stroke="var(--body-edge)" stroke-width="5"/>'
+   +'<ellipse cx="72" cy="62" rx="17" ry="9" fill="#fff" opacity=".5" transform="rotate(-30 72 62)"/>'
+   +'<path d="M72 150 Q100 166 128 150 L128 176 Q100 186 72 176Z" fill="#2E3B33" opacity=".92"/>'
+   +'<ellipse cx="64" cy="116" rx="10" ry="6" fill="#F08D7A" opacity=".55"/><ellipse cx="136" cy="116" rx="10" ry="6" fill="#F08D7A" opacity=".55"/>'
+   +eyes+mouth+'</g></svg>';
+}
+function saying(){
+  if(S.log.length===0)return "หิวแล้ว วันนี้กินอะไรดี?";
+  if(cnt("good")>=2)return "วันนี้เก่งมาก รู้สึกมีแรงเลย!";
+  if(mood()==="tired")return "เพลียนิดหน่อย กินของดีสักมื้อนะ";
+  if(mood()==="happy")return "สบายตัวสุดๆ!";
+  return "ยังไหวอยู่ มื้อต่อไปเลือกของดีให้หน่อยนะ";
+}
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("on");},3600);}
+function hop(){var p=document.getElementById("pet");if(!p)return;p.classList.remove("hop");void p.getBoundingClientRect();p.classList.add("hop");}
+
+var app=document.getElementById("app");
+
+/* ---------- ตัวช่วยสร้างหน้าตา ---------- */
+function ct(ic,text,right){
+  return '<h2 class="ct"><span class="ic" aria-hidden="true">'+ic+'</span>'+text+(right?'<span class="r">'+right+'</span>':'')+'</h2>';
+}
+function bigBtn(cls,attr,em,t,sub){
+  return '<button class="big '+cls+'" '+attr+'><span class="em" aria-hidden="true">'+em+'</span><span class="tx">'+t+'<small>'+sub+'</small></span></button>';
+}
+
+/* ---------- ส่วนประกอบหน้าหลัก ---------- */
+function knowledgeCard(){
+  var f=FACTS[(S.day-1)%FACTS.length];
+  var answered=S.quizDay===S.day;
+  var body=ct("💡","ความรู้วันนี้")+'<p>'+esc(f.q)+'</p>';
+  if(!answered){
+    body+=f.o.map(function(t,i){return '<button class="food" data-q="'+i+'">'+esc(t)+'</button>';}).join("");
+  }else{
+    body+=f.o.map(function(t,i){
+      var cls=i===f.a?"ans right":"ans";
+      return '<div class="'+cls+'">'+(i===f.a?"✓ ":"")+esc(t)+(i===S.quizPick&&i!==f.a?" (ที่คุณเลือก)":"")+'</div>';
+    }).join("");
+    body+='<div class="tipbox">'+(S.quizPick===f.a?"ถูกต้อง! ":"ยังไม่ใช่ แต่ได้ความรู้ใหม่ ")+esc(f.e)+'</div>';
+  }
+  body+='<p class="note">ข้อมูลทั่วไปเพื่อการเรียนรู้ ไม่ใช่คำแนะนำทางการแพทย์</p>';
+  return '<div class="card kn">'+body+'</div>';
+}
+function pickerCard(){
+  if(S.pick){
+    return '<div class="card">'+ct(KIND_EM[S.pick],"เลือกเมนูที่กิน")
+     +FOODS[S.pick].map(function(f,i){return '<button class="food" data-eat="'+i+'">'+esc(f.n)+'</button>';}).join("")
+     +'<button class="btn alt gap" data-act="back">ย้อนกลับ</button></div>';
+  }
+  return '<div class="card">'+ct("🍽️","มื้อนี้กินแบบไหน?")+'<div class="choice">'
+   +bigBtn("g",'data-pick="good"',"🥗","กินดี","ผัก ปลา ไข่ ผลไม้ ข้าวไม่ขัดสี")
+   +bigBtn("o",'data-pick="ok"',"🍜","พอได้","อาหารจานเดียวทั่วไป")
+   +bigBtn("j",'data-pick="junk"',"🍟","อร่อยแต่ไม่ค่อยดี","ทอด หวานจัด น้ำอัดลม ขนมถุง")+'</div></div>';
+}
+function promiseCard(){
+  if(S.promise){
+    return '<div class="card">'+ct("🎯","คำมั่นของวันนี้")+'<p>'+esc(S.promise)+'</p>'
+      +'<p class="note">ก่อนจบวัน เกมจะถามว่าทำได้จริงไหม ตอบตามจริงได้เลย</p>'
+      +'<button class="btn alt gap" data-act="changepromise">เปลี่ยนคำมั่น</button></div>';
+  }
+  var list=S.easy?PRESETS.slice(0,3):PRESETS;
+  var hint=S.easy?'<p class="note">เมื่อวานยังทำไม่สำเร็จ วันนี้เลยเสนอเป้าที่เบาที่สุดก่อน ค่อยๆ ไปด้วยกัน</p>':'<p class="note">เลือกเรื่องเล็กๆ ที่ทำได้จริงภายในวันนี้ ไม่ต้องยิ่งใหญ่</p>';
+  return '<div class="card">'+ct("🎯","ตั้งคำมั่นของวันนี้")+hint
+   +list.map(function(t,i){return '<button class="food" data-promise="'+i+'">'+esc(t)+'</button>';}).join("")+'</div>';
+}
+function weekCard(){
+  var h=S.hist.slice(-7);
+  if(!h.length)return "";
+  var cols=h.map(function(d){
+    var dots="";
+    var i;
+    for(i=0;i<Math.min(d.g,5);i++)dots+='<i class="dot" style="background:var(--good)"></i>';
+    for(i=0;i<Math.min(d.o,5);i++)dots+='<i class="dot" style="background:var(--ok)"></i>';
+    for(i=0;i<Math.min(d.j,5);i++)dots+='<i class="dot" style="background:var(--junk)"></i>';
+    var mk=d.res==="done"?"✓":d.res==="part"?"½":d.res==="no"?"–":"";
+    return '<div class="col"><span>วัน '+d.d+'</span><span class="mk">'+mk+'</span>'+dots+'</div>';
+  }).join("");
+  var withP=h.filter(function(d){return d.res;});
+  var done=withP.filter(function(d){return d.res==="done";}).length;
+  var tally={};
+  h.forEach(function(d){if(d.b)tally[d.b]=(tally[d.b]||0)+1;});
+  var top=null,topN=0;
+  for(var b in tally){if(tally[b]>topN){top=b;topN=tally[b];}}
+  var topL=top?BARRIERS.filter(function(x){return x.id===top;})[0].l:"";
+  var line=withP.length?'ทำตามคำมั่นได้ '+done+' จาก '+withP.length+' วันที่ตั้งไว้':'ยังไม่เคยตั้งคำมั่น ลองดูนะ';
+  if(topN>=2)line+=' · อุปสรรคที่เจอบ่อย: '+esc(topL);
+  return '<div class="card">'+ct("📊","ภาพรวมวันล่าสุด")
+   +'<div class="week">'+cols+'</div>'
+   +'<div class="legend">'
+   +'<span><i class="dot" style="background:var(--good)"></i>กินดี</span>'
+   +'<span><i class="dot" style="background:var(--ok)"></i>พอได้</span>'
+   +'<span><i class="dot" style="background:var(--junk)"></i>ไม่ค่อยดี</span>'
+   +'<span>✓ ทำตามคำมั่น</span><span>½ บางส่วน</span><span>– ยังไม่ได้ทำ</span></div>'
+   +'<p>'+line+'</p></div>';
+}
+
+function renderHome(){
+  var how=S.hideHow?"":
+   '<div class="card how">'+ct("📖","เล่นยังไง")+'<ol>'
+   +'<li>อ่านความรู้วันนี้ แล้วตอบคำถามสั้นๆ</li>'
+   +'<li>ตั้งคำมั่นเล็กๆ 1 ข้อที่จะทำจริงในวันนี้</li>'
+   +'<li>กินอะไรไปก็บันทึกตามจริง</li>'
+   +'<li>ก่อนจบวัน บอกตามจริงว่าทำได้ไหม ทำไม่ได้ก็ไม่เป็นไร เกมจะช่วยหาทางปรับ</li></ol>'
+   +'<button class="btn alt" data-act="hidehow">เข้าใจแล้ว</button></div>';
+  var logs=S.log.length?S.log.map(function(x){
+    return '<div class="log"><i class="dot" style="background:'+COLOR[x.k]+'"></i><span>'+esc(x.n)+'</span></div>';
+  }).join(""):'<div class="note">ยังไม่มีมื้อวันนี้</div>';
+  var bump=S.coins!==lastCoins;lastCoins=S.coins;
+  var low=S.energy<40;
+  app.innerHTML=
+   '<header class="top"><span class="logo k">🍙 ข้าวปั้น</span><span class="chip">วันที่ '+S.day+'</span></header>'
+   +how
+   +'<section class="stage"><div class="say">'+esc(saying())+'</div><div class="pet-wrap">'+petSvg(mood())+'</div>'
+   +'<div class="meter" role="progressbar" aria-label="พลังของข้าวปั้น" aria-valuenow="'+S.energy+'" aria-valuemin="0" aria-valuemax="100"><i'+(low?' data-low':'')+' style="width:'+lastEnergy+'%"></i></div>'
+   +'<div class="stats"><span class="chip">พลัง '+S.energy+'%</span><span class="chip">🔥 '+S.streak+' วัน</span><span class="chip'+(bump?' bump':'')+'">🪙 '+S.coins+'</span></div></section>'
+   +knowledgeCard()
+   +promiseCard()
+   +pickerCard()
+   +'<div class="card">'+ct("📝","วันนี้กินอะไรไปบ้าง",S.log.length?S.log.length+" มื้อ":"")+'<div style="margin-top:6px">'+logs+'</div></div>'
+   +weekCard()
+   +'<div class="card">'+ct("🌊","อยากกินของไม่ดีมากตอนนี้?")+'<p class="note">เล่นเกมสั้นๆ 45 วินาที ให้ความอยากผ่านไป</p><button class="btn alt gap" data-act="crave">สู้ความอยาก</button></div>'
+   +'<button class="btn" data-act="endday">จบวันนี้ (ทบทวน 1 นาที)</button>'
+   +'<p class="note" style="text-align:center;margin-top:14px">เหรียญให้กับการบอกตามจริง ไม่ใช่ความสมบูรณ์แบบ เกมไม่นับแคลอรี ถ้าการกินเริ่มทำให้เครียดหรือกังวล ลองคุยกับผู้เชี่ยวชาญนะ</p>';
+  /* ให้แถบพลังค่อยๆ เลื่อนจากค่าเดิมไปค่าใหม่ */
+  var bar=app.querySelector(".meter>i"),e=S.energy;
+  lastEnergy=e;
+  if(bar)requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.width=e+"%";});});
+}
+
+/* ---------- ทบทวนก่อนจบวัน ---------- */
+function renderReview(){
+  var sum='กินดี '+cnt("good")+' · พอได้ '+cnt("ok")+' · ไม่ค่อยดี '+cnt("junk")+' มื้อ';
+  var h='<section class="stage"><div class="say">มาทบทวนวันนี้กัน ตอบตามจริงได้เลย ไม่มีผิดไม่มีถูก</div><div class="pet-wrap">'+petSvg(mood())+'</div></section>';
+  if(R.step==="summary"){
+    app.innerHTML=h+'<div class="card">'+ct("📋","สรุปวันนี้")+'<p>'+sum+'</p><p class="note">วันนี้ไม่ได้ตั้งคำมั่นไว้ พรุ่งนี้ลองตั้งดูนะ</p>'
+      +'<button class="btn gap" data-act="finish">ไปวันถัดไป</button></div>';
+  }else if(R.step==="result"){
+    app.innerHTML=h+'<div class="card">'+ct("📋","สรุปวันนี้")+'<p>'+sum+'</p></div>'
+      +'<div class="card">'+ct("🎯","คำมั่นของวันนี้")+'<p>'+esc(S.promise)+'</p><p>วันนี้ทำได้ไหม?</p><div class="choice">'
+      +bigBtn("g",'data-res="done"',"✅","ทำได้","+15🪙")
+      +bigBtn("o",'data-res="part"',"🌗","ทำได้บางส่วน","+8🪙")
+      +bigBtn("j",'data-res="no"',"💬","ยังไม่ได้ทำ","+4🪙 ที่บอกตามจริง")+'</div></div>';
+  }else if(R.step==="barrier"){
+    app.innerHTML=h+'<div class="card">'+ct("🧩","อะไรขวางไว้?")+'<p class="note">ไม่ต้องรู้สึกผิด อุปสรรคคือข้อมูลที่ช่วยให้พรุ่งนี้ง่ายขึ้น</p>'
+      +BARRIERS.map(function(b){return '<button class="food" data-barrier="'+b.id+'">'+esc(b.l)+'</button>';}).join("")+'</div>';
+  }else{
+    var b=BARRIERS.filter(function(x){return x.id===R.b;})[0];
+    app.innerHTML=h+'<div class="card">'+ct("✨","ลองแบบนี้ดู")+'<div class="tipbox">'+esc(b.tip)+'</div>'
+      +'<p>พรุ่งนี้เกมจะเสนอเป้าที่เบาลงให้ก่อน</p>'
+      +'<button class="btn gap" data-act="finish">ตกลง ไปวันถัดไป</button></div>';
+  }
+}
+function finishDay(){
+  var res=R&&R.res||null,b=R&&R.b||null;
+  var g=cnt("good"),o=cnt("ok"),j=cnt("junk");
+  var gain=res==="done"?15:res==="part"?8:res==="no"?4:0;
+  var tried=g>=1||res==="done"||res==="part";
+  S.coins+=gain;
+  if(tried){S.streak++;}else{S.streak=0;}
+  if(res==="done")S.easy=false;
+  else if(res==="no"||b==="hard")S.easy=true;
+  S.hist.push({d:S.day,g:g,o:o,j:j,res:res,b:b});
+  S.hist=S.hist.slice(-14);
+  S.day++;S.log=[];S.pick="";S.promise="";
+  S.energy=Math.round((S.energy+50)/2);
+  var msg=tried?"วันนี้ผ่าน! ลองทำติดต่อกัน "+S.streak+" วัน":"ไม่เป็นไร พรุ่งนี้เริ่มใหม่ด้วยกัน";
+  R=null;save();render();toast(msg);
+}
+
+/* ---------- มินิเกมสู้ความอยาก ---------- */
+var TIPS=["ความอยากมาเป็นคลื่น ผ่านไปเองใน 10–20 นาที","ลองดื่มน้ำสักแก้วก่อน","ลุกเดินสักรอบ ช่วยตัดความอยากได้","ถ้ายังอยากอยู่ แบ่งกินครึ่งหนึ่งก็ได้ ไม่ต้องห้ามตัวเอง"];
+function renderCrave(){
+  app.innerHTML='<div class="card">'+ct("🌊","สู้ความอยาก")
+   +'<p>แตะความอยากให้แตกครบ 10 ลูกภายใน 45 วินาที ระหว่างนั้นหายใจเข้าออกตามวงกลม</p>'
+   +'<div class="arena" id="arena"><div class="guide"><span>หายใจ</span></div></div>'
+   +'<div class="tbar" aria-hidden="true"><i id="tb"></i></div>'
+   +'<div class="row"><span class="chip" id="gt">เวลา 45</span><span class="chip" id="gs">แตกแล้ว 0/10</span></div>'
+   +'<div class="row"><button class="btn" id="gstart" data-act="start">เริ่มเลย</button></div>'
+   +'<div class="row"><button class="btn alt" data-act="leave">กลับหน้าหลัก</button></div>'
+   +'<p class="note" id="tip" style="margin-top:12px">'+esc(TIPS[Math.floor(Math.random()*TIPS.length)])+'</p></div>';
+}
+function timeBar(run){
+  var tb=document.getElementById("tb");if(!tb)return;
+  tb.style.transition="none";tb.style.width="100%";
+  if(run){void tb.offsetWidth;tb.style.transition="width 45s linear";tb.style.width="0%";}
+}
+function startCrave(){
+  stopCrave();
+  var arena=document.getElementById("arena"),btn=document.getElementById("gstart");
+  btn.disabled=true;
+  G={pop:0,left:45,sp:null,tm:null};
+  var gt=document.getElementById("gt"),gs=document.getElementById("gs");
+  gt.textContent="เวลา 45";gs.textContent="แตกแล้ว 0/10";
+  timeBar(true);
+  function spawn(){
+    if(arena.querySelectorAll(".orb:not(.pop)").length>=4)return;
+    var o=document.createElement("button");o.className="orb";o.setAttribute("aria-label","ความอยาก แตะให้แตก");
+    o.textContent=["🍟","🍰","🥤","🍫"][Math.floor(Math.random()*4)];
+    o.style.left=Math.random()*(arena.clientWidth-64)+"px";
+    o.style.top=Math.random()*(arena.clientHeight-64)+"px";
+    o.addEventListener("click",function(){
+      if(!G||o.classList.contains("pop"))return;
+      o.classList.add("pop");setTimeout(function(){o.remove();},190);
+      G.pop++;gs.textContent="แตกแล้ว "+G.pop+"/10";
+      if(G.pop>=10)endCrave(true);
+    });
+    arena.appendChild(o);
+    setTimeout(function(){if(o.parentNode)o.remove();},2200);
+  }
+  G.sp=setInterval(spawn,650);spawn();
+  G.tm=setInterval(function(){G.left--;gt.textContent="เวลา "+G.left;if(G.left<=0)endCrave(false);},1000);
+}
+function stopCrave(){if(G){clearInterval(G.sp);clearInterval(G.tm);G=null;}}
+function endCrave(win){
+  stopCrave();
+  var arena=document.getElementById("arena");if(!arena)return;
+  arena.querySelectorAll(".orb").forEach(function(o){o.remove();});
+  timeBar(false);
+  var b=document.getElementById("gstart");b.disabled=false;b.textContent="เล่นอีกรอบ";
+  if(win){S.coins+=5;S.energy=clamp(S.energy+4,10,100);toast("ชนะแล้ว +5🪙 ตอนนี้ใจเย็นลงหรือยัง? ถ้ายังอยากอยู่ ลองเลือกของแทนที่ดีกว่า");}
+  else{toast("หมดเวลา ไม่เป็นไร ลองอีกรอบได้");}
+  save();
+}
+
+/* ---------- render + การกระทำ ---------- */
+function viewKey(){return S.crave?"crave":R?"review:"+R.step:"home";}
+function paint(){
+  stopCrave();
+  if(S.crave)renderCrave();
+  else if(R)renderReview();
+  else renderHome();
+}
+/* เปลี่ยนหน้าแบบนุ่มนวล: ใช้ View Transition ถ้าเบราว์เซอร์รองรับ
+   เลื่อนขึ้นบนสุดเฉพาะตอนเปลี่ยนหน้า (หรือสั่งเอง) ไม่เลื่อนทุกครั้งที่กดเลือก */
+function render(opt){
+  opt=opt||{};
+  var key=viewKey();
+  var go=function(){
+    paint();
+    if(booted&&(opt.top||key!==lastView))window.scrollTo(0,0);
+    lastView=key;
+    if(opt.after)opt.after();
+  };
+  if(booted&&!reduceMo.matches&&document.startViewTransition)document.startViewTransition(go);
+  else go();
+}
+function eat(i){
+  var f=FOODS[S.pick][i],k=S.pick,msg;
+  S.log.push({n:f.n,k:k});
+  if(k==="good"){S.coins+=10;S.energy=clamp(S.energy+12,10,100);msg="เยี่ยม! ข้าวปั้นมีแรงขึ้น +10🪙";}
+  else if(k==="ok"){S.coins+=5;S.energy=clamp(S.energy+5,10,100);msg="โอเค +5🪙 "+(f.tip||"");}
+  else{S.coins+=2;S.energy=clamp(S.energy-4,10,100);msg="ขอบคุณที่บอกตามจริง +2🪙 "+(f.tip||"");}
+  S.pick="";save();render({top:true,after:hop});toast(msg);
+}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("button");if(!t)return;
+  var d=t.dataset;
+  if(d.pick){S.pick=d.pick;render();}
+  else if(d.eat!==undefined)eat(+d.eat);
+  else if(d.q!==undefined){
+    var f=FACTS[(S.day-1)%FACTS.length];
+    S.quizDay=S.day;S.quizPick=+d.q;S.coins+=3;save();render();
+    toast(S.quizPick===f.a?"ถูกต้อง! +3🪙":"ได้ความรู้ใหม่ +3🪙");
+  }
+  else if(d.promise!==undefined){
+    var list=S.easy?PRESETS.slice(0,3):PRESETS;
+    S.promise=list[+d.promise];save();render();toast("ตั้งคำมั่นแล้ว ลองทำให้ได้นะ");
+  }
+  else if(d.act==="changepromise"){S.promise="";save();render();}
+  else if(d.act==="back"){S.pick="";render();}
+  else if(d.act==="hidehow"){S.hideHow=true;save();render();}
+  else if(d.act==="endday"){R={step:S.promise?"result":"summary",res:null,b:null};render();}
+  else if(d.res){
+    R.res=d.res;
+    if(d.res==="done"){finishDay();}else{R.step="barrier";render();}
+  }
+  else if(d.barrier){R.b=d.barrier;R.step="tweak";render();}
+  else if(d.act==="finish")finishDay();
+  else if(d.act==="crave"){S.crave=true;render();}
+  else if(d.act==="leave"){S.crave=false;render();}
+  else if(d.act==="start")startCrave();
+});
+
+/* เปิดแอปครั้งแรก: องค์ประกอบค่อยๆ ลอยขึ้นทีละส่วน (เล่นครั้งเดียว) */
+app.className="app intro";
+render();
+booted=true;
+setTimeout(function(){app.className="app";},1200);
+})();
+</script>
+</body>
+</html>
